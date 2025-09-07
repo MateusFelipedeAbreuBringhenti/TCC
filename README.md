@@ -58,7 +58,10 @@ git clone https://github.com/MateusFelipedeAbreuBringhenti/TCC.git
 ```
 Acesse a aplicação em http://localhost:8000.
 
-🔤 Siglas e Conceitos
+---
+
+## 🔤 Siglas e Conceitos
+
 TSA: Time-Stamp Authority – Autoridade de Carimbo do Tempo.
 
 TSP: Time-Stamp Protocol – Protocolo de Carimbo do Tempo.
@@ -68,5 +71,9 @@ TST: Time-Stamp Token – Token de Carimbo do Tempo.
 CRL: Certificate Revocation List – Lista de Certificados Revogados.
 
 OCSP: Online Certificate Status Protocol – Protocolo de Status de Certificado Online.
+
+## 📝 Referências
+
+Blablablabla
 
 
