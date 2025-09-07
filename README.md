@@ -22,7 +22,7 @@
 
 ## 📝 Sobre
 
-Este projeto foi desenvolvido como Trabalho de Conclusão de Curso e tem como objetivo criar uma solução prática para emissão de carimbos de tempo digitais, garantindo **autenticidade e integridade** dos documentos.
+Este projeto será desenvolvido como Trabalho de Conclusão de Curso e tem como objetivo criar uma solução prática para emissão de carimbos de tempo digitais, garantindo **autenticidade e integridade** dos documentos.
 
 ---
 
@@ -39,28 +39,22 @@ Este projeto foi desenvolvido como Trabalho de Conclusão de Curso e tem como ob
 
 ### 1. Clonar o Repositório
 
-```
+```bash
 git clone https://github.com/MateusFelipedeAbreuBringhenti/TCC.git
-cd TCC
 ```
 
 2. Criar e Ativar o Ambiente Virtual
-```
-bash
-Copiar código
-python3 -m venv venv
-source venv/bin/activate  # No Windows: venv\Scripts\activate
+```bash
+
 ```
 3. Instalar Dependências
 
 ```bash
-Copiar código
-pip install -r requirements.txt
+
 ```
 4. Executar a Aplicação
 ```bash
-Copiar código
-uvicorn main:app --reload
+
 ```
 Acesse a aplicação em http://localhost:8000.
 
