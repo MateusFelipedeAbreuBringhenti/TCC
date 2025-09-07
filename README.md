@@ -1,137 +1,86 @@
-# **Artigo / TCC**
+## **Artigo / TCC**
 
-Vídeo para decidir Fastapi x flask
+##### Vídeo para decidir Fastapi x flask
 
 https://www.youtube.com/watch?v=9kyZMUqwM9U
 
 
-##### **Siglas**
-
-
+### **Siglas**
 
 **TSA (Time-Stamp Authority)**
 
 Autoridade de Carimbo do Tempo, é a entidade confiável que recebe o hash do documento e devolve o carimbo do tempo assinado
 
-
-
 **TSP (Time-Stamp Protocol)**
 
 Protocolo de Carimbo do Tempo, definido na RFC 3161, regras de como o hash deve ser enviado para a TSA e como o carimbo é devolvido
-
-
 
 **TST (Time-Stamp Token)**
 
 O token emitido pela TSA, contém o hash, a data/hora e a assinatura digital da TSA, provando que o documento existia naquele momento
 
-
-
 **CRL (Certificate Revocation List)**
 
 Lista de Certificados Revogados, é publicada pela Autoridade Certificadora para informar que um certificado foi cancelado antes da expiração
-
-
 
 **OCSP (Online Certificate Status Protocol)**
 
 Protocolo que permite verificar em tempo real se um certificado é válido ou foi revogado, sem precisar baixar toda a CRL
 
-
-
 **PKI (Public Key Infrastructure)**
 
 Infraestrutura de Chaves Públicas, conjunto de tecnologias, políticas e procedimentos que suportam certificados digitais
-
-
 
 **CA (Certification Authority)**]
 
 Autoridade Certificadora, emite e gerencia certificados digitais
 
-
-
 **RA (Registration Authority)**
 
 Autoridade de Registro, faz a validação da identidade antes da emissão do certificado pela CA
-
-
 
 **CSR (Certificate Signing Request)**
 
 Requisição de Assinatura de Certificado, arquivo gerado quando alguém pede um certificado digital para uma CA
 
-
-
 **X.509**
 
 Padrão de certificados digitais usado em PKI, todos os certificados, inclusive os da TSA, seguem esse formato
-
-
 
 **LTV (Long-Term Validation)**
 
 Validação de Longo Prazo, técnica para garantir que assinaturas/carimbos continuem válidos mesmo anos depois
 
-
-
 **ICP-Brasil**
 
 Infraestrutura de Chaves Públicas Brasileira, sistema nacional que regula a certificação digital no Brasil
 
-
-
 ---
-
-
 
 ##### **Termos técnicos utilizados / roteiro (em ordem)**
 
-
-
-
-
 \## **JSON Canônico (JCS-like)**
 
-
-
 JSON comum vai permitir variações (espaços, ordem das chaves, etc.), o que mudaria o hash
-
 Canonização determinística (JCS – JSON Canonicalization Scheme) vai garantir que os dados iguais, sempre geram o mesmo JSON byte a byte
 
+Exemplo:
+```
+json
+{"nome":"Mateus","idade":25}
+```
 
+e
 
-Exemplo
-
-
-
-&nbsp; json
-
-&nbsp; {"nome":"Mateus","idade":25}
-
-
-
-&nbsp; e
-
-
-
-&nbsp; json
-
-&nbsp; { "idade":25 , "nome":"Mateus" }
-
-
-
-&nbsp; -> viram a mesma string canônica antes do hash, assim o hash sempre será consistente
-
-
+```
+json
+{ "idade":25 , "nome":"Mateus" }
+```
+-> viram a mesma string canônica antes do hash, assim o hash sempre será consistente
 
 ---
 
-
-
-\## **Hashing (SHA-256)**
-
-
+## **Hashing (SHA-256)**
 
 Função criptográfica que vai transformar os dados em um resumo único de 256 bits (um hash fixo de 64 caracteres hexadecimais) site https://site112.com/gerador-hash
 
