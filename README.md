@@ -40,7 +40,7 @@ Este projeto será desenvolvido como Trabalho de Conclusão de Curso e tem como 
 ### 1. Clonar o Repositório
 
 ```bash
-git clone [https://github.com/MateusFelipedeAbreuBringhenti/TCC.git](https://github.com/MateusFelipedeAbreuBringhenti/TCC)
+git clone https://github.com/MateusFelipedeAbreuBringhenti/TCC
 ```
 
 2. Criar e Ativar o Ambiente Virtual
