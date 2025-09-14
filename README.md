@@ -2,6 +2,7 @@
 
 ![Python](https://img.shields.io/badge/python-3.9+-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Modern%20API-brightgreen)
+![Postman](https://img.shields.io/badge/Postman-API%20Test%20-orange)
 
 ---
 
@@ -98,7 +99,7 @@ Acesse a aplicação em: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs
 
 ## 📝 Referências
 
-1. RFC 3161 – [Time-Stamp Protocol (TSP)](https://www.rfc-editor.org/rfc/rfc3161)
-2. [FastAPI Documentation](https://fastapi.tiangolo.com/)
-3. [FPDF Python Library](https://pyfpdf.github.io/fpdf2/)
-4. [pypdf Documentation](https://pypdf.readthedocs.io/)
+1. RFC 3161 - [Time-Stamp Protocol (TSP)](https://www.rfc-editor.org/rfc/rfc3161)
+2. FastAPI - [FastAPI Documentation](https://fastapi.tiangolo.com/)
+3. FPDF - [FPDF Python Library](https://pyfpdf.github.io/fpdf2/)
+4. PYPDF - [pypdf Documentation](https://pypdf.readthedocs.io/)
