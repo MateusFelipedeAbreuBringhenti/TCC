@@ -2,7 +2,6 @@
 
 ![Python](https://img.shields.io/badge/python-3.9+-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Modern%20API-brightgreen)
-![Flask](https://img.shields.io/badge/Flask-Web%20Framework-orange)
 
 ---
 
@@ -22,96 +21,84 @@
 
 ## 📝 Sobre
 
-Este projeto será desenvolvido como Trabalho de Conclusão de Curso e tem como objetivo criar uma solução prática para emissão de carimbos de tempo digitais, garantindo **autenticidade e integridade** dos documentos.
+Este projeto, desenvolvido como Trabalho de Conclusão de Curso, cria uma solução prática para emissão de carimbos de tempo digitais, garantindo **autenticidade e integridade** dos documentos. Permite upload de PDFs, geração de JSON com hash, emissão de TST simulado e PDF final combinando o documento original com a página de TST.
 
 ---
 
 ## ⚙️ Tecnologias Utilizadas
 
-- **Python 3.9+**
-- **FastAPI** – Framework moderno para APIs rápidas e seguras.
-- **Flask** – Micro framework web em Python.
-- **Docker** – Containerização para fácil deploy e reprodução do ambiente.
+* **Python 3.9+**
+* **FastAPI** – Framework moderno para APIs rápidas e seguras.
+* **FPDF** – Geração de PDFs reais e estilizados.
+* **pypdf** – Manipulação e combinação de PDFs.
+* **Postman** – Testes de API.
 
 ---
 
 ## 🚀 Como Executar
 
-### 1. Clonar o Repositório
+### 1️⃣ Clonar o Repositório
 
 ```bash
 git clone https://github.com/MateusFelipedeAbreuBringhenti/TCC
+cd TCC
 ```
 
-2. Criar e Ativar o Ambiente Virtual
-```bash
-
-```
-3. Instalar Dependências
+### 2️⃣ Criar e Ativar o Ambiente Virtual
 
 ```bash
-
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# Linux / Mac
+source venv/bin/activate
 ```
-4. Executar a Aplicação
+
+### 3️⃣ Instalar Dependências
+
 ```bash
-
+pip install -r requirements.txt
 ```
-Acesse a aplicação em http://localhost:8000.
+
+> Se não existir `requirements.txt`, instale manualmente:
+
+```bash
+pip install fastapi uvicorn fpdf pypdf
+```
+
+### 4️⃣ Executar a Aplicação
+
+```bash
+uvicorn main:app --reload
+```
+
+Acesse a aplicação em: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+* **POST /upload** → Upload de PDF
+* **GET /emitir/{id}** → Emissão do PDF final com página de TST
 
 ---
 
 ## 🔤 Siglas e Conceitos
 
-**TSA (Time-Stamp Authority)**
+* **TSA (Time-Stamp Authority)** – Autoridade de Carimbo do Tempo. Recebe o hash do documento e devolve o TST.
+* **TSP (Time-Stamp Protocol)** – Protocolo definido na RFC 3161.
+* **TST (Time-Stamp Token)** – Token emitido pela TSA, com hash, timestamp e assinatura.
+* **CRL (Certificate Revocation List)** – Lista de certificados revogados.
+* **OCSP (Online Certificate Status Protocol)** – Verifica em tempo real a validade de certificados.
+* **PKI (Public Key Infrastructure)** – Infraestrutura de Chaves Públicas.
+* **CA (Certification Authority)** – Autoridade Certificadora.
+* **RA (Registration Authority)** – Autoridade de Registro.
+* **CSR (Certificate Signing Request)** – Requisição de assinatura de certificado.
+* **X.509** – Padrão de certificados digitais.
+* **LTV (Long-Term Validation)** – Validação de longo prazo de assinaturas/carimbos.
+* **ICP-Brasil** – Infraestrutura nacional de certificação digital.
 
-Autoridade de Carimbo do Tempo, é a entidade confiável que recebe o hash do documento e devolve o carimbo do tempo assinado
-
-**TSP (Time-Stamp Protocol)**
-
-Protocolo de Carimbo do Tempo, definido na RFC 3161, regras de como o hash deve ser enviado para a TSA e como o carimbo é devolvido
-
-**TST (Time-Stamp Token)**
-
-O token emitido pela TSA, contém o hash, a data/hora e a assinatura digital da TSA, provando que o documento existia naquele momento
-
-**CRL (Certificate Revocation List)**
-
-Lista de Certificados Revogados, é publicada pela Autoridade Certificadora para informar que um certificado foi cancelado antes da expiração
-
-**OCSP (Online Certificate Status Protocol)**
-
-Protocolo que permite verificar em tempo real se um certificado é válido ou foi revogado, sem precisar baixar toda a CRL
-
-**PKI (Public Key Infrastructure)**
-
-Infraestrutura de Chaves Públicas, conjunto de tecnologias, políticas e procedimentos que suportam certificados digitais
-
-**CA (Certification Authority)**]
-
-Autoridade Certificadora, emite e gerencia certificados digitais
-
-**RA (Registration Authority)**
-
-Autoridade de Registro, faz a validação da identidade antes da emissão do certificado pela CA
-
-**CSR (Certificate Signing Request)**
-
-Requisição de Assinatura de Certificado, arquivo gerado quando alguém pede um certificado digital para uma CA
-
-**X.509**
-
-Padrão de certificados digitais usado em PKI, todos os certificados, inclusive os da TSA, seguem esse formato
-
-**LTV (Long-Term Validation)**
-
-Validação de Longo Prazo, técnica para garantir que assinaturas/carimbos continuem válidos mesmo anos depois
-
-**ICP-Brasil**
-
-Infraestrutura de Chaves Públicas Brasileira, sistema nacional que regula a certificação digital no Brasil
+---
 
 ## 📝 Referências
 
-Blablablabla
-
-
+1. RFC 3161 – [Time-Stamp Protocol (TSP)](https://www.rfc-editor.org/rfc/rfc3161)
+2. [FastAPI Documentation](https://fastapi.tiangolo.com/)
+3. [FPDF Python Library](https://pyfpdf.github.io/fpdf2/)
+4. [pypdf Documentation](https://pypdf.readthedocs.io/)
