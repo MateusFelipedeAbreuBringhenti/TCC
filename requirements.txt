@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+hashlib
+python-multipart
+reportlab
+PyPDF2
+cryptography

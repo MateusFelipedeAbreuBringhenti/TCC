@@ -1,0 +1,15 @@
+{
+    "json": {
+        "id": "b10e4a26-ad91-40e1-a349-714104f07c1d",
+        "nome_arquivo": "bd5d1131d6c593ddcd651d22e6781965.pdf",
+        "tipo": "alvara_funcionamento",
+        "data_upload": "2025-09-14T19:03:33.926450Z"
+    },
+    "hash": "e167b58683bbba08836912e105730221193e02a99208c333fd3a8c66c8f45af8",
+    "tst": {
+        "tsa": "Prefeitura Renascen\u00e7a - TSA Simulada",
+        "hash": "e167b58683bbba08836912e105730221193e02a99208c333fd3a8c66c8f45af8",
+        "timestamp": "2025-09-14T19:03:33.926450Z",
+        "assinatura": "fake-signature-12345"
+    }
+}
