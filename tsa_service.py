@@ -16,7 +16,7 @@ PUBLIC_KEY_PATH = os.path.join(KEYS_DIR, "public_key.pem")
 
 
 def _ensure_keys_exist(key_size: int = 2048):
-    """Gera par de chaves RSA caso não exista."""
+    
     os.makedirs(KEYS_DIR, exist_ok=True)
     if os.path.exists(PRIVATE_KEY_PATH) and os.path.exists(PUBLIC_KEY_PATH):
         return
@@ -54,9 +54,7 @@ def _load_public_key():
 
 
 def gerar_tst(conteudo_bytes: bytes) -> Dict:
-    """
-    Gera um TST: hash (hex), timestamp e assinatura RSA (base64) sobre o digest SHA-256.
-    """
+
     _ensure_keys_exist()
 
     # hash hex para o JSON legível
@@ -89,12 +87,7 @@ def gerar_tst(conteudo_bytes: bytes) -> Dict:
 
 
 def verificar_tst(conteudo_bytes: bytes, tst: Dict) -> bool:
-    """
-    Verifica se:
-      - o hash (hex) bate com o conteúdo;
-      - a assinatura (base64) é válida para o digest.
-    Retorna True apenas se ambos baterem.
-    """
+
     _ensure_keys_exist()
     public_key = _load_public_key()
 

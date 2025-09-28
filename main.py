@@ -18,7 +18,7 @@ os.makedirs(RESULT_DIR, exist_ok=True)
 
 @app.post("/carimbar/")
 async def carimbar_documento(file: UploadFile):
-    """Recebe PDF, gera TST e devolve PDF + TST.json em um zip."""
+    
     # Salva PDF original
     file_location = os.path.join(UPLOAD_DIR, file.filename)
     with open(file_location, "wb") as f:
@@ -51,7 +51,7 @@ async def carimbar_documento(file: UploadFile):
 
 @app.post("/verificar/")
 async def verificar_documento(pdf: UploadFile, tst_file: UploadFile):
-    """Verifica se o PDF corresponde ao TST enviado."""
+    
     # Salva arquivos enviados
     pdf_path = os.path.join(UPLOAD_DIR, pdf.filename)
     with open(pdf_path, "wb") as f:
