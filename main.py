@@ -1,119 +1,68 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile
 from fastapi.responses import FileResponse
-import hashlib, json, os, uuid
-from datetime import datetime
-from fpdf import FPDF
-from pypdf import PdfReader, PdfWriter
+import os
+import shutil
+import zipfile
+import json
 
-app = FastAPI()
+from tsa_service import gerar_tst
+from pdf_utils import verificar_tst_conteudo
 
-STORAGE = "storage"
-UPLOADS = "uploaded"
-GENERATED = "generated"
-os.makedirs(STORAGE, exist_ok=True)
-os.makedirs(UPLOADS, exist_ok=True)
-os.makedirs(GENERATED, exist_ok=True)
+app = FastAPI(title="Autoridade de Carimbo do Tempo - TSA")
 
-# TSA fake (gera TST simples)
-def gerar_tst(hash_hex: str):
-    return {
-        "tsa": "Prefeitura de Vitorino - TSA Simulada",
-        "hash": hash_hex,
-        "timestamp": datetime.utcnow().isoformat() + "Z",
-        "assinatura": "fake-signature-12345"
-    }
+UPLOAD_DIR = "uploads"
+RESULT_DIR = "results"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+os.makedirs(RESULT_DIR, exist_ok=True)
 
-@app.post("/upload")
-async def upload_documento(file: UploadFile = File(...)):
-    conteudo = await file.read()
-    file_id = str(uuid.uuid4())
-    file_path = f"{UPLOADS}/{file_id}.pdf"
-    with open(file_path, "wb") as f:
-        f.write(conteudo)
 
-    # JSON canônico (metadados simples)
-    json_doc = {
-        "id": file_id,
-        "nome_arquivo": file.filename,
-        "tipo": "alvara_funcionamento",
-        "data_upload": datetime.utcnow().isoformat() + "Z"
-    }
+@app.post("/carimbar/")
+async def carimbar_documento(file: UploadFile):
+    """Recebe PDF, gera TST e devolve PDF + TST.json em um zip."""
+    # Salva PDF original
+    file_location = os.path.join(UPLOAD_DIR, file.filename)
+    with open(file_location, "wb") as f:
+        shutil.copyfileobj(file.file, f)
 
-    # Hash SHA-256
-    hash_hex = hashlib.sha256(json.dumps(json_doc, sort_keys=True).encode()).hexdigest()
+    # Lê bytes do PDF original
+    with open(file_location, "rb") as f:
+        conteudo = f.read()
 
-    # Gera TST fake
-    tst = gerar_tst(hash_hex)
+    # Gera TST (assina o digest com RSA)
+    tst = gerar_tst(conteudo)
 
-    # Salva JSON + hash + TST
-    registro = {
-        "json": json_doc,
-        "hash": hash_hex,
-        "tst": tst
-    }
-    with open(f"{STORAGE}/{file_id}.json", "w") as f:
-        json.dump(registro, f, indent=4)
+    # Salva PDF carimbado (mantém o pdf original bytes)
+    output_pdf = os.path.join(RESULT_DIR, f"carimbado_{file.filename}")
+    shutil.copy(file_location, output_pdf)
 
-    return {"id": file_id, "hash": hash_hex, "tst": tst}
+    # Salva o TST em JSON
+    output_tst = os.path.join(RESULT_DIR, f"{file.filename}.tst.json")
+    with open(output_tst, "w", encoding="utf-8") as f:
+        json.dump(tst, f, ensure_ascii=False, indent=4)
 
-@app.get("/emitir/{file_id}")
-async def emitir_pdf(file_id: str):
-    storage_file = f"{STORAGE}/{file_id}.json"
-    uploaded_pdf = f"{UPLOADS}/{file_id}.pdf"
-    output_pdf = f"{GENERATED}/{file_id}.pdf"
-    
-    if not os.path.exists(uploaded_pdf) or not os.path.exists(storage_file):
-        return {"erro": "Documento não encontrado"}
+    # Cria um zip com os dois arquivos
+    zip_path = os.path.join(RESULT_DIR, f"{file.filename}_carimbado.zip")
+    with zipfile.ZipFile(zip_path, "w") as zipf:
+        zipf.write(output_pdf, f"carimbado_{file.filename}")
+        zipf.write(output_tst, f"{file.filename}.tst.json")
 
-    # Lê o PDF original
-    reader = PdfReader(uploaded_pdf)
-    writer = PdfWriter()
-    for page in reader.pages:
-        writer.add_page(page)
+    return FileResponse(zip_path, filename=f"{file.filename}_carimbado.zip")
 
-    # Adiciona uma página com o TST
-    with open(storage_file, "r") as f:
-        registro = json.load(f)
-    pdf = FPDF()
-    pdf.add_page()
 
-    # Cabeçalho
-    pdf.set_font("Arial", "B", 16)
-    pdf.cell(0, 10, "Documento Notarizado - TST Simulado", ln=True, align="C")
-    pdf.ln(10)
+@app.post("/verificar/")
+async def verificar_documento(pdf: UploadFile, tst_file: UploadFile):
+    """Verifica se o PDF corresponde ao TST enviado."""
+    # Salva arquivos enviados
+    pdf_path = os.path.join(UPLOAD_DIR, pdf.filename)
+    with open(pdf_path, "wb") as f:
+        shutil.copyfileobj(pdf.file, f)
 
-    # Linha de separação
-    pdf.set_draw_color(0, 0, 0)
-    pdf.set_line_width(0.5)
-    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
-    pdf.ln(10)
+    tst_path = os.path.join(UPLOAD_DIR, tst_file.filename)
+    with open(tst_path, "wb") as f:
+        shutil.copyfileobj(tst_file.file, f)
 
-    # Conteúdo do TST
-    pdf.set_font("Arial", "", 12)
-    pdf.cell(0, 8, f"TSA: {registro['tst']['tsa']}", ln=True)
-    pdf.cell(0, 8, f"Hash do Documento: {registro['hash']}", ln=True)
-    pdf.cell(0, 8, f"Timestamp: {registro['tst']['timestamp']}", ln=True)
-    pdf.ln(5)
-
-    # Assinatura fake
-    pdf.set_font("Arial", "I", 12)
-    pdf.multi_cell(0, 8, f"Assinatura Digital (Simulada): {registro['tst']['assinatura']}")
-    pdf.ln(10)
-
-    # Linha final
-    pdf.set_line_width(0.3)
-    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
-
-    tmp_pdf_path = f"{GENERATED}/{file_id}_tst.pdf"
-    pdf.output(tmp_pdf_path)
-
-    # Adiciona a página do TST ao PDF original
-    tst_reader = PdfReader(tmp_pdf_path)
-    for page in tst_reader.pages:
-        writer.add_page(page)
-
-    # Salva PDF final
-    with open(output_pdf, "wb") as f:
-        writer.write(f)
-
-    return FileResponse(output_pdf, media_type="application/pdf", filename=f"{file_id}.pdf")
+    try:
+        valido, tst = verificar_tst_conteudo(pdf_path, tst_path)
+        return {"valido": valido, "tst": tst}
+    except Exception as e:
+        return {"valido": False, "erro": str(e)}
