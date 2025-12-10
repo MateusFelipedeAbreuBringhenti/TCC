@@ -1,0 +1,15 @@
+{
+    "json": {
+        "id": "1ed43fd6-934c-41a1-acfc-923c0c5add33",
+        "nome_arquivo": "bd5d1131d6c593ddcd651d22e6781965.pdf",
+        "tipo": "alvara_funcionamento",
+        "data_upload": "2025-09-14T19:21:58.369366Z"
+    },
+    "hash": "a5e5e5ca75dab85f5c8c7a232ab340d60022534a00005e1367c77c66b51032a0",
+    "tst": {
+        "tsa": "Prefeitura de Vitorino - TSA Simulada",
+        "hash": "a5e5e5ca75dab85f5c8c7a232ab340d60022534a00005e1367c77c66b51032a0",
+        "timestamp": "2025-09-14T19:21:58.369366Z",
+        "assinatura": "fake-signature-12345"
+    }
+}
